@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String   @unique
+  lastName       String   @unique
+  phone          String?
+  email          String   @unique
+  password       String
+  role           String?
+  status         Boolean? @default(true)
+  image          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  Rating         Rating[]
+}
+
+model Topic {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  activities Activity[]
+}
+
+model Activity {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  type    String
+  topicId String?  @db.ObjectId
+  topic   Topic?   @relation(fields: [topicId], references: [id])
+  Rating  Rating[]
+}
+
+model Rating {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  type       String
+  userId     String    @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  activityId String?   @db.ObjectId
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  quizId     String?   @db.ObjectId
+  quiz       Quiz?     @relation(fields: [quizId], references: [id])
+  score      Float
+}
+
+model Story {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  content String
+  images  String[]
+}
+
+type Answers {
+  id     String
+  answer String
+}
+
+type Question {
+  id       Int
+  question String
+  answers  Answers[]
+}
+
+model Quiz {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  question Question[]
+  Rating   Rating[]
+}
