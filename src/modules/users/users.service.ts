@@ -37,4 +37,19 @@ export class UsersService {
   async delete(id: string) {
     return this.prisma.user.delete({ where: { id } });
   }
+
+  async pushRating(data: Record<string, any>) {
+    return await this.prisma.user.update({
+      where: { id: data.id },
+      data: {
+        Rating: {
+          create: {
+            score: data.score,
+            type: data.type,
+            activityId: data.activityId,
+          },
+        },
+      },
+    });
+  }
 }
