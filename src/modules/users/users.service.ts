@@ -24,6 +24,9 @@ export class UsersService {
   async findOne(email: string) {
     return await this.prisma.user.findFirst({
       where: { email },
+      include: {
+        Rating: true,
+      },
     });
   }
 

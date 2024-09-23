@@ -21,7 +21,19 @@ model User {
   image          String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  Rating         Rating[]
+  ratings         Rating[]
+}
+
+model Rating {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  type       String
+  userId     String    @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  activityId String?   @db.ObjectId
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  quizId     String?   @db.ObjectId
+  quiz       Quiz?     @relation(fields: [quizId], references: [id])
+  score      Float
 }
 
 model Topic {
@@ -38,19 +50,6 @@ model Activity {
   topic   Topic?   @relation(fields: [topicId], references: [id])
   Rating  Rating[]
 }
-
-model Rating {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  type       String
-  userId     String    @db.ObjectId
-  user       User      @relation(fields: [userId], references: [id])
-  activityId String?   @db.ObjectId
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  quizId     String?   @db.ObjectId
-  quiz       Quiz?     @relation(fields: [quizId], references: [id])
-  score      Float
-}
-
 model Story {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   title   String
