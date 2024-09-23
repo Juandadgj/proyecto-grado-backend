@@ -2,10 +2,10 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  name: string;
+  name?: string;
 
   @IsString()
-  lastName: string;
+  lastName?: string;
 
   @IsOptional()
   @IsString()
@@ -16,4 +16,7 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
+
+  @IsString()
+  username: string = 'username_fake';
 }

@@ -39,4 +39,9 @@ export class UsersController {
   delete(@Param('id') id: string) {
     return this.userService.delete(id);
   }
+
+  @Post('rating')
+  rating(@Body() data: Record<string, any>) {
+    return this.userService.pushRating(data);
+  }
 }
