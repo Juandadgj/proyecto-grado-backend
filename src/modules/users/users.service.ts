@@ -25,7 +25,7 @@ export class UsersService {
     return await this.prisma.user.findFirst({
       where: { email },
       include: {
-        Rating: true,
+        ratings: true,
       },
     });
   }
@@ -45,7 +45,7 @@ export class UsersService {
     return await this.prisma.user.update({
       where: { id: data.id },
       data: {
-        Rating: {
+        ratings: {
           create: {
             score: data.score,
             type: data.type,

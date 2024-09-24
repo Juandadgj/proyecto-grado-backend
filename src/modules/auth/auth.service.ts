@@ -22,7 +22,7 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({ where: { OR } });
     if (user?.password !== password) {
       console.log('password', password);
-      console.log('user.password', user.password);
+      // console.log('user.password', user.password);
       throw new UnauthorizedException();
     }
     const { ...dataUser } = user;
