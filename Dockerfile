@@ -22,6 +22,8 @@ RUN yarn build
 FROM base AS production
 ENV PORT=80
 ENV HOST=0.0.0.0
+ENV DATABASE_URL=mongodb+srv://it:rAx6LpzreDhyenGx@cluster0.b340u.mongodb.net/SordosApp
+ENV JWT_SECRET=secret
 COPY ./package*.json ./
 COPY ./src ./src
 RUN yarn install --production
