@@ -10,10 +10,4 @@ export class AuthController {
   signIn(@Body() signInDto: Record<string, any>) {
     return this.authService.signIn(signInDto.emailOrStudentCode, signInDto.password);
   }
-
-  @HttpCode(HttpStatus.CREATED)
-  @Post('signup')
-  signUp(@Body() signUpDto) {
-    return this.authService.signUp(signUpDto);
-  }
 }

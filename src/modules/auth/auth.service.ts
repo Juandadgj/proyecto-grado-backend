@@ -11,33 +11,16 @@ export class AuthService {
   ) {}
 
   async signIn(emailOrStudentCode: string, password: string): Promise<object> {
-    const OR = [
-      {
-        email: emailOrStudentCode,
-      },
-      {
-        studentCode: emailOrStudentCode,
-      },
-    ];
-    const user = await this.prisma.user.findFirst({ where: { OR } });
-    if (user?.password !== password) {
-      console.log('password', password);
-      // console.log('user.password', user.password);
-      throw new UnauthorizedException();
+    const user = await this.prisma.user.findFirst({
+      where: { username: emailOrStudentCode },
+    });
+    if (!user) {
+      const newUser = await this.prisma.user.create({
+        data: { username: emailOrStudentCode },
+      });
+      return { accessToken: await this.jwtService.signAsync(newUser) };
+    } else {
+      return { accessToken: await this.jwtService.signAsync(user) };
     }
-    const { ...dataUser } = user;
-    delete dataUser.password;
-    return {
-      accessToken: await this.jwtService.signAsync(dataUser),
-    };
-  }
-
-  async signUp(data: Prisma.UserCreateInput): Promise<object> {
-    const user = await this.prisma.user.create({ data });
-    const { ...dataUser } = user;
-    delete dataUser.password;
-    return {
-      accessToken: await this.jwtService.signAsync(dataUser),
-    };
   }
 }

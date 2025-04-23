@@ -21,9 +21,9 @@ export class UsersService {
     return await this.prisma.user.findMany();
   }
 
-  async findOne(email: string) {
+  async findOne(username: string) {
     return await this.prisma.user.findFirst({
-      where: { email },
+      where: { username },
       include: {
         ratings: true,
       },
@@ -48,8 +48,7 @@ export class UsersService {
         ratings: {
           create: {
             score: data.score,
-            type: data.type,
-            activityId: data.activityId,
+            game: data.activityId,
           },
         },
       },
